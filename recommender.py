@@ -1,20 +1,19 @@
-import pandas as pd
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
-
-# Hollywood data
+# Read Hollywood dataset
 tmdb = pd.read_csv("tmdb_5000_movies.csv")[['title', 'overview']].dropna()
 
-# Bollywood data
-bollywood = pd.read_csv("bollywood_movies.csv", encoding='utf-8', on_bad_lines='skip')[['Name', 'Overview']]
+# Read Bollywood dataset (with correct columns)
+bollywood = pd.read_csv("bollywood_movies.csv", encoding='utf-8', on_bad_lines='skip')[['title', 'description']]
 bollywood.columns = ['title', 'overview']
 
-# Combine
+# Combine both
 movies = pd.concat([tmdb, bollywood], ignore_index=True)
 movies.dropna(inplace=True)
 movies.reset_index(drop=True, inplace=True)
 
 # TF-IDF + similarity
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+
 tfidf = TfidfVectorizer(stop_words='english')
 tfidf_matrix = tfidf.fit_transform(movies['overview'])
 cosine_sim = cosine_similarity(tfidf_matrix)
@@ -27,5 +26,3 @@ def recommend(title):
     idx = titles[titles == title].index[0]
     sim_scores = sorted(enumerate(cosine_sim[idx]), key=lambda x: x[1], reverse=True)[1:6]
     return movies['title'].iloc[[i[0] for i in sim_scores]].tolist()
-
-
