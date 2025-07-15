@@ -7,7 +7,7 @@ st.set_page_config(page_title="🎬 Movie Recommender", page_icon="🎥", layout
 # Header
 st.markdown("""
     <h1 style='text-align: center; color: #F63366;'>🎬 Movie Recommender</h1>
-    <h4 style='text-align: center; color: #AAAAAA;'>Made with ❤️ by Shreyam Dwivedi</h4>
+    <h4 style='text-align: center; color: #AAAAAA;'>Made with ❤️ by Aryan Sinha</h4>
     <br>
 """, unsafe_allow_html=True)
 
